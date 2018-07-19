@@ -1,3 +1,6 @@
-# ToDoWebApp
-Simple Todo webApp with user login.
-Start server and run index.php and Enjoy!!!
+# ToDO Web App
+
+Simple todo web app made for learning purpose
+
+https://to-do-app.000webhostapp.com/
+
