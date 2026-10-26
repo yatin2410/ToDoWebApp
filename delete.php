@@ -1,43 +1,41 @@
 <?php
+include('conn.php');
 
-	include('conn.php');
-	if(isset($_REQUEST['did']))
-	{
+if (isset($_REQUEST['did'])) {
+    // Retrieve and validate the ID as an integer
+    $id = $_REQUEST['did'];
+    if (!filter_var($id, FILTER_VALIDATE_INT)) {
+        // Invalid ID, redirect or handle error
+        echo "<script type=\"text/javascript\">
+                alert('Invalid ID');
+                window.location = \"show.php\";
+              </script>";
+        exit;
+    }
 
-		 $id = $_REQUEST['did'];
+    // Prepare and execute a parameterized DELETE statement
+    $stmt = $conn->prepare("DELETE FROM task WHERE id = ?");
+    if ($stmt) {
+        $stmt->bind_param("i", $id);
+        $re_del = $stmt->execute();
+        $stmt->close();
 
-		$del = "delete from task where id=$id";
-		$re_del = $conn->query($del);
-
-
-		if($re_del)
-		{
-			?>
-			<script type="text/javascript">
-			
-				window.location ="show.php";
-				
-
-
-			</script>
-
-			<?php
-
-		}
-
-		else
-		{
-			?>
-
-			<script type="text/javascript">
-				alert('Delete not success');
-				window.location ="show.php";
-
-
-			</script>
-<?php
+        if ($re_del) {
+            echo "<script type=\"text/javascript\">
+                    window.location = \"show.php\";
+                  </script>";
+        } else {
+            echo "<script type=\"text/javascript\">
+                    alert('Delete not success');
+                    window.location = \"show.php\";
+                  </script>";
+        }
+    } else {
+        // Preparation failed
+        echo "<script type=\"text/javascript\">
+                alert('Database error');
+                window.location = \"show.php\";
+              </script>";
+    }
 }
-
-	}
-
 ?>
